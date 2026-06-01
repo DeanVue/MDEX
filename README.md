@@ -1,2 +1,2 @@
 # MDEX
-Operating system simulator.
+web based Operating system simulator.
