@@ -4,11 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ubuntu Desktop Mobile Clone</title>
-    <!-- Mengimpor Font Ubuntu Sans & Ubuntu Mono Asli -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@300;400;500;700&family=Ubuntu+Mono&display=swap">
-    <!-- Mengimpor Material Symbols Outlined untuk ikon sistem -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,300,0,0" />
     <style>
+        /* --- Ubuntu CSS Variables (v1.2) --- */
+        :root {
+            --base-font-size: 13px;
+            --topbar-font-size: 11px;
+            --title-font-size: 12px;
+            --accent-color: #E95420; /* Default Oranye Ubuntu */
+            
+            /* Theme Variables (Default Dark) */
+            --window-bg: #2d2d2d;
+            --window-sidebar-bg: #202020;
+            --window-text: #eeeeee;
+            --content-bg: #2d2d2d;
+            --item-hover: #353535;
+            --border-color: #151515;
+        }
+
         /* --- Core Setup --- */
         * {
             box-sizing: border-box;
@@ -26,14 +40,17 @@
             background-color: #2c001e;
         }
 
-        /* --- Desktop Wallpaper --- */
+        /* --- Desktop Wallpaper Layer --- */
         #desktop {
             width: 100%;
             height: 100%;
             position: relative;
-            background: radial-gradient(circle at 50% 50%, #661a4e 0%, #3a0d2c 60%, #1e0016 100%);
+            background-color: #2c001e;
+            /* Fallback gradien jika file gambar di assets/wallpapers belum diupload */
+            background-image: radial-gradient(circle at 50% 50%, #661a4e 0%, #3a0d2c 60%, #1e0016 100%);
             background-size: cover;
-            background-position: center;
+            background-position: center center;
+            background-repeat: no-repeat;
             overflow: hidden;
         }
 
@@ -49,14 +66,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 10px;
-            font-size: 11px;
+            font-size: var(--topbar-font-size);
             color: #eeeeee;
             font-weight: 400;
             z-index: 1001; 
         }
         
         #top-bar-activities {
-            font-size: 11px;
+            font-size: var(--topbar-font-size);
             font-weight: 500;
             color: #ffffff;
             cursor: pointer;
@@ -79,7 +96,7 @@
             color: #eeeeee;
         }
         .status-indicators span {
-            font-size: 10px;
+            font-size: calc(var(--topbar-font-size) - 1px);
         }
 
         /* --- Ubuntu Left Dock / Sidebar --- */
@@ -96,7 +113,7 @@
             padding: 12px 0 8px 0;
             gap: 12px;
             z-index: 1000; 
-            transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+            transition: transform 0.22s cubic-bezier(0, 0, 0.2, 1);
             will-change: transform;
         }
 
@@ -146,7 +163,6 @@
             border-radius: 50%;
         }
 
-        /* AREA SWIPE TRANSPARAN SAAT BUKA */
         #sidebar-drag-handle {
             position: absolute;
             top: 0;
@@ -157,7 +173,6 @@
             cursor: ew-resize;
         }
 
-        /* ZONA INTERAKSI TEPI KIRI (FASE TUTUP) */
         #sidebar-touch-zone {
             position: absolute;
             top: 24px; 
@@ -169,7 +184,6 @@
             display: none;
         }
         
-        /* TOMBOL ARROW KECIL (FASE TUTUP) - CLEAN TANPA BG */
         #sidebar-show-btn {
             position: absolute;
             top: 50%;
@@ -177,7 +191,7 @@
             transform: translateY(-50%);
             background: transparent;
             border: none;
-            color: rgba(233, 84, 32, 0.8);
+            color: var(--accent-color);
             width: 24px;
             height: 35px;
             font-size: 16px;
@@ -187,85 +201,128 @@
             outline: none;
             z-index: 1003;
         }
-        #sidebar-show-btn:active {
-            color: rgba(255, 255, 255, 1);
-        }
 
-        /* --- Ubuntu Window Style --- */
+        /* --- Premium Ubuntu Window Style (v1.2) --- */
         .window {
             position: absolute;
-            width: 230px;
-            height: 280px;
-            min-width: 160px;
-            min-height: 140px;
-            background: #f2f1f0;
-            border-radius: 6px 6px 4px 4px;
-            border: 1px solid #3c3b37;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+            width: 430px; 
+            height: 360px;
+            min-width: 320px;
+            min-height: 260px;
+            background: var(--window-bg);
+            border-radius: 8px 8px 6px 6px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             z-index: 10;
         }
         .window-header {
-            height: 30px;
-            background: linear-gradient(to bottom, #3c3b37, #32312d);
-            border-bottom: 1px solid #2a2926;
+            height: 34px;
+            background: var(--window-sidebar-bg);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             flex-direction: row-reverse;
             justify-content: space-between;
             align-items: center;
-            padding: 0 8px;
+            padding: 0 12px;
             cursor: move;
         }
         .window-title {
-            font-size: 12px;
-            font-weight: 400;
+            font-size: var(--title-font-size);
+            font-weight: 500;
             color: #dfdbd2;
             flex: 1;
             text-align: center;
-            margin-right: 20px;
+            margin-right: 24px;
         }
         .window-controls {
             display: flex;
-            gap: 5px;
+            gap: 6px;
         }
         .win-btn {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #44433e;
-            border: 1px solid #2a2926;
-            color: #dfdbd2;
-            font-size: 9px;
+            background: #353535;
+            border: 1px solid var(--border-color);
+            color: #cfcfcf;
+            font-size: 10px;
             font-weight: bold;
         }
         .win-close:hover { background: #E95420; color: #ffffff; }
         .win-min:hover { background: #77216F; color: #ffffff; }
         
+        /* Master Layout Split Pane */
+        .window-body-wrapper {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            background: var(--content-bg);
+        }
+
+        /* Sidebar Navigasi Internal */
+        .window-internal-sidebar {
+            width: 140px;
+            background: var(--window-sidebar-bg);
+            padding: 12px 0;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow-y: auto;
+        }
+        .win-sidebar-item {
+            padding: 8px 14px;
+            font-size: 11px;
+            color: var(--window-text);
+            cursor: pointer;
+            font-weight: 400;
+            border-left: 3px solid transparent;
+        }
+        /* Efek klik bawaan Ubuntu: Highlight Putih/Abu Tanpa Bounce */
+        .win-sidebar-item:active {
+            background: rgba(255, 255, 255, 0.15) !important;
+        }
+        .win-sidebar-item.active {
+            background: var(--item-hover);
+            color: #ffffff;
+            border-left-color: var(--accent-color);
+            font-weight: 500;
+        }
+        .win-sidebar-header {
+            padding: 6px 14px 2px 14px;
+            font-size: 10px;
+            color: #666;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Area Konten Utama */
         .window-content {
             flex: 1;
-            padding: 10px;
-            overflow: auto;
-            background: #ffffff;
-            color: #333333;
-            font-size: 13px;
+            padding: 16px;
+            overflow-y: auto;
+            color: var(--window-text);
+            font-size: var(--base-font-size);
+            background: var(--content-bg);
             touch-action: auto;
         }
 
-        /* --- Apps Layouts --- */
+        /* --- Apps Internal Layouts --- */
         .terminal-body {
-            background: #300a24;
-            color: #ffffff;
+            background: #300a24 !important;
             font-family: "Ubuntu Mono", 'Courier New', Courier, monospace;
-            font-size: 12px;
             display: flex;
             flex-direction: column;
+            height: 100%;
+            padding: 4px;
         }
         .terminal-output {
             flex: 1;
@@ -273,6 +330,7 @@
             overflow-y: auto;
             margin-bottom: 5px;
             line-height: 1.4;
+            color: #ffffff;
         }
         .terminal-input-line {
             display: flex;
@@ -292,6 +350,7 @@
             font-size: inherit;
             outline: none;
         }
+        
         .notepad-textarea {
             width: 100%;
             height: 100%;
@@ -299,10 +358,12 @@
             resize: none;
             outline: none;
             font-family: inherit;
-            color: #333333;
+            color: var(--window-text);
             background: transparent;
             line-height: 1.5;
+            font-size: var(--base-font-size);
         }
+
         .files-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -311,23 +372,125 @@
         }
         .file-item {
             padding: 8px 4px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
-        .file-item:active { background: #dfdbd2; }
+        .file-item:active { background: var(--item-hover); }
         .file-folder-icon {
-            width: 32px;
-            height: 32px;
-            background: #df4a16;
-            border-radius: 4px;
+            width: 36px;
+            height: 36px;
+            background: var(--accent-color);
+            border-radius: 6px;
         }
-        .file-name { font-size: 11px; color: #333333; font-weight: 400; }
+        .file-name { font-size: calc(var(--base-font-size) - 2px); color: var(--window-text); }
 
-        /* --- UPDATE DETAIL: Ubuntu App Drawer Style (Grid 3 Kolom Bebas Kebawah) --- */
+        /* --- UI INTERNAL SETTINGS & APPEARANCE --- */
+        .settings-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .settings-section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        /* Style Block (Dark / Light Theme Option) */
+        .theme-toggle-container {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            background: rgba(0,0,0,0.15);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .theme-card {
+            text-align: center;
+            cursor: pointer;
+            flex: 1;
+            max-width: 100px;
+        }
+        .theme-card-preview {
+            height: 55px;
+            border: 2px solid #555;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .theme-card.active .theme-card-preview {
+            border-color: var(--accent-color);
+        }
+        .theme-card-label {
+            font-size: 11px;
+            display: block;
+            margin-top: 6px;
+            color: #aaa;
+        }
+        .theme-card.active .theme-card-label {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Accent Color Circle Row */
+        .accent-picker-bar {
+            background: rgba(0,0,0,0.15);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .accent-circle {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .accent-circle.active {
+            border-color: #ffffff;
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+
+        /* Wallpaper Grid Component */
+        .wpp-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .wpp-item-thumb {
+            height: 50px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background-size: cover;
+            background-position: center;
+        }
+        .wpp-item-thumb:hover { border-color: #666; }
+        .wpp-item-thumb.active { border-color: var(--accent-color); }
+
+        .add-picture-label {
+            font-size: 11px;
+            color: var(--accent-color);
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .add-picture-label:hover { text-decoration: underline; }
+
+        /* --- Ubuntu App Drawer Style --- */
         #app-drawer {
             position: absolute;
             top: 24px; 
@@ -344,13 +507,9 @@
             padding: 25px 20px;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.25s ease-in-out;
+            transition: opacity 0.22s ease-in-out;
         }
-        
-        #app-drawer.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        #app-drawer.active { opacity: 1; pointer-events: auto; }
 
         .drawer-search-container {
             width: 100%;
@@ -364,31 +523,25 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
-            font-size: 13px;
+            font-size: var(--base-font-size);
             outline: none;
             text-align: center;
-            touch-action: elevation;
-        }
-        .drawer-search-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
         }
 
-        /* PERBAIKAN: Set agar grid membagi rata tepat 3 kolom kesamping */
         .drawer-grid {
             width: 100%;
-            max-width: 320px;   /* Batas lebar ideal area grid 3 kolom di layar ponsel */
-            max-height: 70%;    /* Batas tinggi maksimum responsif */
+            max-width: 320px;   
+            max-height: 70%;    
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* MATRIKS 3 KOLOM: [] [] [] */
-            gap: 24px 16px;     /* Jarak vertikal 24px, horizontal 16px */
-            overflow-y: auto;   /* Jika aplikasi bertambah banyak ke bawah, otomatis bisa di-scroll */
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 24px 16px;     
+            overflow-y: auto;   
             justify-items: center;
             align-content: start;
-            touch-action: pan-y; /* Mendukung gesture usap scroll naik-turun */
+            touch-action: pan-y; 
             padding: 10px;
         }
         
-        /* Mengembalikan orientasi ikon di atas dan tulisan di bawah agar simetris di grid 3 kolom */
         .drawer-app-item {
             display: flex;
             flex-direction: column; 
@@ -398,9 +551,6 @@
             cursor: pointer;
             width: 75px;
         }
-        .drawer-app-item:active {
-            transform: scale(0.9);
-        }
         .drawer-app-item img {
             width: 44px;
             height: 44px;
@@ -408,8 +558,7 @@
         }
         .drawer-app-name {
             color: #e6e6e6;
-            font-size: 11px;
-            font-weight: 400;
+            font-size: calc(var(--base-font-size) - 2px);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -421,10 +570,9 @@
 
     <div id="desktop">
         
-        <!-- --- Top Bar --- -->
         <div id="top-bar">
             <div id="top-bar-activities" onclick="toggleAppDrawer()">Activities</div>
-            <div class="top-bar-center" id="live-clock">Oct 23 12:20</div>
+            <div class="top-bar-center" id="live-clock">Jun 1 20:13</div>
             
             <div class="status-indicators">
                 <span class="material-symbols-outlined">wifi</span>
@@ -434,7 +582,6 @@
             </div>
         </div>
 
-        <!-- --- Side Dock / Sidebar --- -->
         <div id="launcher">
             <div class="launcher-apps-container" id="apps-container">
                 <div class="launcher-icon" onclick="openApp('terminal')">
@@ -449,7 +596,7 @@
                 <div class="launcher-icon" onclick="openApp('notepad')">
                     <img src="/asset/app/icons/gedit.png" alt="Editor">
                 </div>
-                <div class="launcher-icon" onclick="alert('Settings Simulator Only')">
+                <div class="launcher-icon" onclick="openApp('settings')">
                     <img src="/asset/app/icons/settings.png" alt="Settings">
                 </div>
             </div>
@@ -461,20 +608,14 @@
                     <div class="grid-dot"></div><div class="grid-dot"></div><div class="grid-dot"></div>
                 </div>
             </div>
-
-            <!-- AREA SWIPE TRANSPARAN SAAT BUKA -->
             <div id="sidebar-drag-handle"></div>
         </div>
 
-        <!-- --- Ubuntu App Drawer Component --- -->
         <div id="app-drawer">
             <div class="drawer-search-container">
                 <input type="text" class="drawer-search-input" placeholder="Type to search..." autocomplete="off">
             </div>
-            
-            <!-- TAMPILAN MATRIKS GRID 3 KOLOM SEPERTI KEBUTUHANMU -->
             <div class="drawer-grid">
-                <!-- Baris 1 -->
                 <div class="drawer-app-item" onclick="openAppFromDrawer('terminal')">
                     <img src="/asset/app/icons/terminal.png" alt="Terminal">
                     <div class="drawer-app-name">Terminal</div>
@@ -487,40 +628,33 @@
                     <img src="/asset/app/icons/nautilus.png" alt="Files">
                     <div class="drawer-app-name">Files</div>
                 </div>
-                
-                <!-- Baris 2 (Otomatis turun ke bawah karena sistem grid) -->
                 <div class="drawer-app-item" onclick="openAppFromDrawer('notepad')">
                     <img src="/asset/app/icons/gedit.png" alt="Text Editor">
                     <div class="drawer-app-name">Text Editor</div>
                 </div>
-                <div class="drawer-app-item" onclick="toggleAppDrawer(); alert('Settings Simulator Only');">
+                <div class="drawer-app-item" onclick="openAppFromDrawer('settings')">
                     <img src="/asset/app/icons/settings.png" alt="Settings">
                     <div class="drawer-app-name">Settings</div>
                 </div>
             </div>
         </div>
 
-        <!-- AREA DETEKSI DI TEPI LAYAR -->
         <div id="sidebar-touch-zone"></div>
-        <!-- TOMBOL ARROW KECIL TRANSPARAN -->
         <button id="sidebar-show-btn">❯</button>
-
-        <!-- --- Windows Container --- -->
         <div id="window-layer"></div>
 
     </div>
 
-    <!-- --- Core Logic --- -->
     <script>
         let highestZ = 10;
         let isSidebarHidden = false;
+        let currentGlobalTheme = 'dark'; 
+        let currentWppSelection = 'wpp1.png'; // Melacak wallpaper aktif
 
         function updateClock() {
             const now = new Date();
             const options = { month: 'short', day: 'numeric' };
-            const dateStr = now.toLocaleDateString('en-US', options);
-            const timeStr = now.toTimeString().substring(0, 5);
-            document.getElementById('live-clock').innerText = `${dateStr} ${timeStr}`;
+            document.getElementById('live-clock').innerText = `${now.toLocaleDateString('en-US', options)} ${now.toTimeString().substring(0, 5)}`;
         }
         setInterval(updateClock, 1000);
         updateClock();
@@ -528,20 +662,15 @@
         function toggleAppDrawer() {
             const drawer = document.getElementById('app-drawer');
             drawer.classList.toggle('active');
-            
             if (drawer.classList.contains('active')) {
                 hideSidebar();
                 document.getElementById('sidebar-show-btn').style.display = 'none';
-            } else {
-                showSidebar();
-            }
+            } else { showSidebar(); }
         }
 
-        function openAppFromDrawer(type) {
-            toggleAppDrawer(); 
-            openApp(type);
-        }
+        function openAppFromDrawer(type) { toggleAppDrawer(); openApp(type); }
 
+        /* --- SIKLUS WINDOW MANAGER SPLIT-PANE LAYOUT --- */
         function openApp(type) {
             if (document.getElementById(`win-${type}`)) {
                 bringToFront(document.getElementById(`win-${type}`));
@@ -552,38 +681,72 @@
             const win = document.createElement('div');
             win.id = `win-${type}`;
             win.className = 'window';
-            
             win.style.left = isSidebarHidden ? '15px' : '68px';
             win.style.top = '40px';
             highestZ++;
             win.style.zIndex = highestZ;
 
             let title = '';
-            let contentHTML = '';
+            let leftSidebarHTML = '';
+            let mainContentHTML = '';
 
             if (type === 'terminal') {
                 title = 'ubuntu@gnome:~';
-                contentHTML = `
-                    <div class="window-content terminal-body" onclick="document.getElementById('term-in').focus()">
-                        <div class="terminal-output" id="term-out">Welcome to Ubuntu GNOME Mobile v1.5\nType 'help' for available commands.\n\n</div>
+                leftSidebarHTML = `
+                    <div class="win-sidebar-header">Terminal</div>
+                    <div class="win-sidebar-item active">Local Session</div>
+                    <div class="win-sidebar-item">Preferences</div>
+                `;
+                mainContentHTML = `
+                    <div class="terminal-body" onclick="document.getElementById('term-in').focus()">
+                        <div class="terminal-output" id="term-out">Welcome to Ubuntu GNOME Mobile v1.5\nType 'help' to see instructions.\n\n</div>
                         <div class="terminal-input-line">
                             <span class="terminal-prompt">ubuntu@gnome:~$</span>
                             <input type="text" id="term-in" class="terminal-input" autocomplete="off" autofocus>
                         </div>
                     </div>`;
-            } else if (type === 'notepad') {
+            } 
+            else if (type === 'notepad') {
                 title = 'Text Editor';
-                contentHTML = `<div class="window-content"><textarea class="notepad-textarea" placeholder="Start typing..."></textarea></div>`;
-            } else if (type === 'files') {
+                leftSidebarHTML = `
+                    <div class="win-sidebar-header">Document</div>
+                    <div class="win-sidebar-item active">notes.txt</div>
+                    <div class="win-sidebar-item">+ New File</div>
+                `;
+                mainContentHTML = `<textarea class="notepad-textarea" placeholder="Start typing..."></textarea>`;
+            } 
+            else if (type === 'files') {
                 title = 'Files';
-                contentHTML = `
-                    <div class="window-content">
-                        <div class="files-grid">
-                            <div class="file-item"><div class="file-folder-icon" style="background:#e95420"></div><div class="file-name">Documents</div></div>
-                            <div class="file-item"><div class="file-folder-icon" style="background:#df4a16"></div><div class="file-name">Downloads</div></div>
-                            <div class="file-item"><div class="file-folder-icon" style="background:#77216f"></div><div class="file-name">Pictures</div></div>
-                        </div>
+                leftSidebarHTML = `
+                    <div class="win-sidebar-header">Places</div>
+                    <div class="win-sidebar-item active">Home</div>
+                    <div class="win-sidebar-item">Documents</div>
+                    <div class="win-sidebar-item">Downloads</div>
+                `;
+                mainContentHTML = `
+                    <div class="files-grid">
+                        <div class="file-item"><div class="file-folder-icon"></div><div class="file-name">Documents</div></div>
+                        <div class="file-item"><div class="file-folder-icon"></div><div class="file-name">Downloads</div></div>
+                        <div class="file-item"><div class="file-folder-icon"></div><div class="file-name">Pictures</div></div>
                     </div>`;
+            } 
+            else if (type === 'settings') {
+                title = 'Settings';
+                leftSidebarHTML = `
+                    <div class="win-sidebar-header">Network</div>
+                    <div class="win-sidebar-item" onclick="switchSettingsMenu(this)">Wi-Fi</div>
+                    <div class="win-sidebar-item" onclick="switchSettingsMenu(this)">Bluetooth</div>
+                    <div class="win-sidebar-header">System</div>
+                    <div class="win-sidebar-item" onclick="switchSettingsMenu(this)">Displays</div>
+                    <div class="win-sidebar-item active" onclick="switchSettingsMenu(this)">Appearance</div>
+                    <div class="win-sidebar-item" onclick="switchSettingsMenu(this)">Ubuntu Desktop</div>
+                    <div class="win-sidebar-item" onclick="switchSettingsMenu(this)">Apps</div>
+                    <div class="win-sidebar-header">About</div>
+                    <div class="win-sidebar-item" onclick="switchSettingsMenu(this)">System Details</div>
+                `;
+                
+                // Menyiapkan string HTML khusus menu Appearance bawaan
+                mainContentHTML = getAppearanceTemplate();
             }
 
             win.innerHTML = `
@@ -594,140 +757,239 @@
                     </div>
                     <span class="window-title">${title}</span>
                 </div>
-                ${contentHTML}
+                <div class="window-body-wrapper">
+                    <div class="window-internal-sidebar">${leftSidebarHTML}</div>
+                    <div class="window-content" id="content-area-settings">${mainContentHTML}</div>
+                </div>
             `;
 
             document.getElementById('window-layer').appendChild(win);
             makeDraggable(win);
             win.addEventListener('pointerdown', () => bringToFront(win));
+            
+            applyThemeToWindow(win, currentGlobalTheme);
+            if (type === 'terminal') initTerminal();
+        }
 
-            if (type === 'terminal') {
-                initTerminal();
+        /* --- TEMPLATE ENGINE FOR APPEARANCE --- */
+        function getAppearanceTemplate() {
+            return `
+                <div class="settings-container">
+                    <div>
+                        <span class="settings-section-title">Style</span>
+                        <div class="theme-toggle-container">
+                            <div class="theme-card ${currentGlobalTheme === 'light' ? 'active' : ''}" onclick="changeGlobalTheme('light')">
+                                <div class="theme-card-preview" style="background:#f2f1f0;"><div style="width:30px;height:18px;background:#fff;border-radius:2px;"></div></div>
+                                <span class="theme-card-label">Default</span>
+                            </div>
+                            <div class="theme-card ${currentGlobalTheme === 'dark' ? 'active' : ''}" onclick="changeGlobalTheme('dark')">
+                                <div class="theme-card-preview" style="background:#202020;"><div style="width:30px;height:18px;background:#2d2d2d;border-radius:2px;"></div></div>
+                                <span class="theme-card-label">Dark</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="settings-section-title">Accent Color</span>
+                        <div class="accent-picker-bar">
+                            <div class="accent-circle active" onclick="changeAccent('#E95420', this)" style="background:#E95420;"></div>
+                            <div class="accent-circle" onclick="changeAccent('#3498db', this)" style="background:#3498db;"></div>
+                            <div class="accent-circle" onclick="changeAccent('#2ecc71', this)" style="background:#2ecc71;"></div>
+                            <div class="accent-circle" onclick="changeAccent('#9b59b6', this)" style="background:#9b59b6;"></div>
+                            <div class="accent-circle" onclick="changeAccent('#f1c40f', this)" style="background:#f1c40f;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span class="settings-section-title" style="margin:0;">Background</span>
+                            <label class="add-picture-label">
+                                + Add Picture...
+                                <input type="file" accept="image/*" style="display:none;" onchange="uploadWpp(event)">
+                            </label>
+                        </div>
+                        <div class="wpp-grid">
+                            <div class="wpp-item-thumb ${currentWppSelection === 'wpp1.png' ? 'active' : ''}" onclick="changeWpp('wpp1.png', this)" style="background-color: #661a4e; background-image: url('assets/wallpapers/wpp1.png');"></div>
+                            <div class="wpp-item-thumb ${currentWppSelection === 'wpp2.png' ? 'active' : ''}" onclick="changeWpp('wpp2.png', this)" style="background-color: #2c001e; background-image: url('assets/wallpapers/wpp2.png');"></div>
+                            <div class="wpp-item-thumb ${currentWppSelection === 'wpp3.png' ? 'active' : ''}" onclick="changeWpp('wpp3.png', this)" style="background-color: #1e0016; background-image: url('assets/wallpapers/wpp3.png');"></div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        /* --- INTERACTION HANDLERS --- */
+        function switchSettingsMenu(element) {
+            const parent = element.parentElement;
+            parent.querySelectorAll('.win-sidebar-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+
+            const contentArea = document.getElementById('content-area-settings');
+            
+            if (element.innerText === 'Appearance') {
+                contentArea.innerHTML = getAppearanceTemplate();
+                // Tetap sinkronkan dot accent yang aktif setelah render ulang
+                const currentAccent = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim().toLowerCase();
+                contentArea.querySelectorAll('.accent-circle').forEach(circle => {
+                    circle.classList.remove('active');
+                    if (circle.style.background.includes(currentAccent) || (currentAccent === '#e95420' && circle.style.background.includes('233'))) {
+                        circle.classList.add('active');
+                    }
+                });
+            } else {
+                contentArea.innerHTML = `<div style="opacity:0.3; text-align:center; margin-top:40px; font-size:11px;">${element.innerText} Panel Simulator Only</div>`;
             }
         }
 
-        function bringToFront(win) {
-            highestZ++;
-            win.style.zIndex = highestZ;
+        function changeGlobalTheme(theme) {
+            currentGlobalTheme = theme;
+            document.querySelectorAll('.theme-card').forEach(card => card.classList.remove('active'));
+            
+            if(theme === 'light') {
+                document.documentElement.style.setProperty('--window-bg', '#f2f1f0');
+                document.documentElement.style.setProperty('--window-sidebar-bg', '#e8e7e6');
+                document.documentElement.style.setProperty('--window-text', '#333333');
+                document.documentElement.style.setProperty('--content-bg', '#ffffff');
+                document.documentElement.style.setProperty('--item-hover', '#dfdbd2');
+                document.documentElement.style.setProperty('--border-color', '#cbcac9');
+            } else {
+                document.documentElement.style.setProperty('--window-bg', '#2d2d2d');
+                document.documentElement.style.setProperty('--window-sidebar-bg', '#202020');
+                document.documentElement.style.setProperty('--window-text', '#eeeeee');
+                document.documentElement.style.setProperty('--content-bg', '#2d2d2d');
+                document.documentElement.style.setProperty('--item-hover', '#353535');
+                document.documentElement.style.setProperty('--border-color', '#151515');
+            }
+
+            document.querySelectorAll('.window').forEach(win => applyThemeToWindow(win, theme));
+            // Beri kelas aktif ke elemen yang diklik secara langsung
+            const targetCard = document.querySelector(`.theme-card[onclick*="'${theme}'"]`);
+            if (targetCard) targetCard.classList.add('active');
         }
+
+        function applyThemeToWindow(win, theme) {
+            const sidebar = win.querySelector('.window-internal-sidebar');
+            const content = win.querySelector('.window-content');
+            if (!content || content.classList.contains('terminal-body')) return;
+
+            if (theme === 'light') {
+                win.style.background = '#f2f1f0'; win.style.borderColor = '#cbcac9';
+                if(sidebar) sidebar.style.background = '#e8e7e6'; if(sidebar) sidebar.style.borderColor = '#cbcac9';
+                content.style.background = '#ffffff'; content.style.color = '#333333';
+            } else {
+                win.style.background = '#2d2d2d'; win.style.borderColor = '#151515';
+                if(sidebar) sidebar.style.background = '#202020'; if(sidebar) sidebar.style.borderColor = '#151515';
+                content.style.background = '#2d2d2d'; content.style.color = '#eeeeee';
+            }
+        }
+
+        function changeAccent(color, element) {
+            document.documentElement.style.setProperty('--accent-color', color);
+            document.querySelectorAll('.accent-circle').forEach(circle => circle.classList.remove('active'));
+            element.classList.add('active');
+            document.getElementById('sidebar-show-btn').style.color = color;
+        }
+
+        /* --- WALLPAPER ENGINE WITH ASSETS PATH PROJECTION --- */
+        function changeWpp(imgName, element) {
+            currentWppSelection = imgName;
+            document.querySelectorAll('.wpp-item-thumb').forEach(thumb => thumb.classList.remove('active'));
+            element.classList.add('active');
+            
+            const desktop = document.getElementById('desktop');
+            
+            // Konfigurasi style gambar utama
+            desktop.style.backgroundImage = `url('assets/wallpapers/${imgName}')`;
+            desktop.style.backgroundSize = 'cover';
+            desktop.style.backgroundPosition = 'center center';
+        }
+
+        function uploadWpp(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const desktop = document.getElementById('desktop');
+                    desktop.style.backgroundImage = `url('${e.target.result}')`;
+                    desktop.style.backgroundSize = `cover`;
+                    desktop.style.backgroundPosition = `center center`;
+                    currentWppSelection = ''; // Hapus seleksi aktif thumb bawaan
+                    document.querySelectorAll('.wpp-item-thumb').forEach(t => t.classList.remove('active'));
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function bringToFront(win) { highestZ++; win.style.zIndex = highestZ; }
 
         function makeDraggable(win) {
             const header = win.querySelector('.window-header');
-            
             header.addEventListener('pointerdown', function(e) {
                 if (e.target.classList.contains('win-btn')) return;
                 bringToFront(win);
-                
                 let shiftX = e.clientX - win.getBoundingClientRect().left;
                 let shiftY = e.clientY - win.getBoundingClientRect().top;
-
                 header.setPointerCapture(e.pointerId);
-
                 function onPointerMove(e) {
-                    let newX = e.clientX - shiftX;
-                    let newY = e.clientY - shiftY;
-                    
+                    let newX = e.clientX - shiftX; let newY = e.clientY - shiftY;
                     let minX = isSidebarHidden ? 0 : 56;
-                    if (newX < minX) newX = minX;
-                    if (newY < 24) newY = 24;
-
-                    win.style.left = newX + 'px';
-                    win.style.top = newY + 'px';
+                    if (newX < minX) newX = minX; if (newY < 24) newY = 24;
+                    win.style.left = newX + 'px'; win.style.top = newY + 'px';
                 }
-
                 function onPointerUp() {
                     header.removeEventListener('pointermove', onPointerMove);
                     header.removeEventListener('pointerup', onPointerUp);
                     header.releasePointerCapture(e.pointerId);
                 }
-
                 header.addEventListener('pointermove', onPointerMove);
                 header.addEventListener('pointerup', onPointerUp);
             });
         }
 
-        /* --- Logika Gestur Dua Fase Tepi Layar --- */
+        /* --- Sidebar Swipe Mechanics --- */
         const launcher = document.getElementById('launcher');
         const dragHandle = document.getElementById('sidebar-drag-handle');
         const touchZone = document.getElementById('sidebar-touch-zone');
         const showBtn = document.getElementById('sidebar-show-btn');
-        
-        let startX = 0;
-        let isDragging = false;
-        let lastTap = 0;
+        let startX = 0; let isDragging = false; let lastTap = 0;
 
         launcher.addEventListener('pointerdown', (e) => {
             if (e.target.closest('.launcher-icon') && !e.target.id === 'sidebar-drag-handle') return;
-
-            startX = e.clientX;
-            isDragging = false;
+            startX = e.clientX; isDragging = false;
             launcher.setPointerCapture(e.pointerId);
-
             function onPointerMove(ev) {
                 let diffX = ev.clientX - startX;
-                if (Math.abs(diffX) > 8) {
-                    isDragging = true;
-                }
+                if (Math.abs(diffX) > 8) isDragging = true;
                 if (isDragging && diffX <= 0) {
-                    launcher.style.transition = 'none';
-                    launcher.style.transform = `translateX(${diffX}px)`;
+                    launcher.style.transition = 'none'; launcher.style.transform = `translateX(${diffX}px)`;
                 }
             }
-
-            function onPointerUp(ev) {
+            function onPointerUp() {
                 launcher.removeEventListener('pointermove', onPointerMove);
                 launcher.removeEventListener('pointerup', onPointerUp);
                 launcher.releasePointerCapture(e.pointerId);
-                
-                launcher.style.transition = 'transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1)';
-                
+                launcher.style.transition = 'transform 0.18s cubic-bezier(0, 0, 0.2, 1)';
                 if (isDragging) {
                     let currentTransform = new WebKitCSSMatrix(window.getComputedStyle(launcher).transform).m41;
-                    if (currentTransform < -15) {
-                        hideSidebar();
-                    } else {
-                        launcher.style.transform = 'translateX(0px)';
-                    }
+                    if (currentTransform < -15) hideSidebar(); else launcher.style.transform = 'translateX(0px)';
                 }
             }
-
             launcher.addEventListener('pointermove', onPointerMove);
             launcher.addEventListener('pointerup', onPointerUp);
         });
 
-        launcher.addEventListener('click', (e) => {
-            if (isDragging) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-        }, true);
-
         function hideSidebar() {
-            launcher.style.transform = 'translateX(-57px)';
-            isSidebarHidden = true;
-            dragHandle.style.pointerEvents = 'none';
-            touchZone.style.display = 'block';
-            showBtn.style.display = 'block';
+            launcher.style.transform = 'translateX(-57px)'; isSidebarHidden = true;
+            dragHandle.style.pointerEvents = 'none'; touchZone.style.display = 'block'; showBtn.style.display = 'block';
         }
-
         function showSidebar() {
-            launcher.style.transition = 'transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1)';
-            launcher.style.transform = 'translateX(0px)';
-            isSidebarHidden = false;
-            dragHandle.style.pointerEvents = 'auto';
-            touchZone.style.display = 'none';
-            showBtn.style.display = 'none';
+            launcher.style.transition = 'transform 0.18s cubic-bezier(0, 0, 0.2, 1)';
+            launcher.style.transform = 'translateX(0px)'; isSidebarHidden = false;
+            dragHandle.style.pointerEvents = 'auto'; touchZone.style.display = 'none'; showBtn.style.display = 'none';
         }
-
         showBtn.addEventListener('click', showSidebar);
-
-        touchZone.addEventListener('pointerdown', (e) => {
+        touchZone.addEventListener('pointerdown', () => {
             const now = Date.now();
-            const TIMESLOT = 250;
-            
-            if ((now - lastTap) < TIMESLOT) {
-                showSidebar();
-            }
+            if ((now - lastTap) < 250) showSidebar();
             lastTap = now;
         });
 
@@ -735,24 +997,15 @@
             const input = document.getElementById('term-in');
             const output = document.getElementById('term-out');
             if(!input) return;
-
             input.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     const cmd = input.value.trim().toLowerCase();
                     output.innerText += `ubuntu@gnome:~$ ${input.value}\n`;
-                    
-                    if (cmd === 'help') {
-                        output.innerText += "Available commands: help, clear, about\n";
-                    } else if (cmd === 'clear') {
-                        output.innerText = "";
-                    } else if (cmd === 'about') {
-                        output.innerText += "Ubuntu GNOME Mobile Simulator v1.5\n";
-                    } else if (cmd !== "") {
-                        output.innerText += `Command not found: ${cmd}\n`;
-                    }
-                    
-                    input.value = "";
-                    output.scrollTop = output.scrollHeight;
+                    if (cmd === 'help') output.innerText += "Available commands: help, clear, about\n";
+                    else if (cmd === 'clear') output.innerText = "";
+                    else if (cmd === 'about') output.innerText += "Ubuntu GNOME Mobile Simulator v1.5\n";
+                    else if (cmd !== "") output.innerText += `Command not found: ${cmd}\n`;
+                    input.value = ""; output.scrollTop = output.scrollHeight;
                 }
             });
         }
